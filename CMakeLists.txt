@@ -6,8 +6,11 @@ project(MyGame)
 include_directories("C:/Users/User/Desktop/work/GameTemplate/include/DxLib")
 link_directories("C:/Users/User/Desktop/work/GameTemplate/lib/DxLib")
 
+# src ディレクトリ内のすべての .cpp ファイルを検索して変数に格納
+file(GLOB SOURCES "src/*.cpp")
+
 # 実行可能ファイルを作成
-add_executable(GameTemplate src/main.cpp)
+add_executable(GameTemplate ${SOURCES})
 
 # DxLib のライブラリをリンク
 target_link_libraries(GameTemplate DxLib.lib DxLib_d.lib) # デバッグ版もリンクしておくと便利です
