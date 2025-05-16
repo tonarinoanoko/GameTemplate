@@ -10,4 +10,4 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_executable(GameTemplate ${SOURCES})
 
-target_link_libraries(GameTemplate DxLib.lib DxLib_d.lib)
+target_link_libraries(GameTemplate DxLib.lib)
