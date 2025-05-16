@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "dxlib.h": "c++",
+        "cmath": "c++",
+        "iostream": "c++"
+    }
+}
