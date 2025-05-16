@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 4.0.2)
 project(GameTemplate)
 
 include_directories("C:/Users/User/Desktop/work/GameTemplate/include/DxLib")
