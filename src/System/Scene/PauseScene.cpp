@@ -13,8 +13,8 @@ void PauseScene::initialize() {
 
 void PauseScene::update() {
     // ポーズメニューの操作
-    if (System::InputManager::getInstance().isKeyPressed(KEY_INPUT_P)) {
-        System::Scene::SceneManager::getInstance().resumeGame();
+    if (Input::InputManager::getInstance().isKeyPressed(KEY_INPUT_P)) {
+        Scene::SceneManager::getInstance().resumeGame();
     }
 }
 

@@ -14,7 +14,7 @@ void DebugScene::initialize() {
 }
 
 void DebugScene::update() {
-    if (System::InputManager::getInstance().isKeyPressed(KEY_INPUT_I)) {
+    if (Input::InputManager::getInstance().isKeyPressed(KEY_INPUT_I)) {
         sceneInfoDebugger.setVisible(!sceneInfoDebugger.visible());
     }
 }
