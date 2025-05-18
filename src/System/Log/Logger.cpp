@@ -1,12 +1,12 @@
 #include "System/Log/Logger.h"
-#include <cstdio> // vsnprintf
+#include <cstdio>
+#include <chrono>
 
-namespace System {
 namespace Log {
 
 Logger* Logger::instance = nullptr;
 
-Logger::Logger() : currentLogLevel(LogLevel::DEBUG) {}
+Logger::Logger() : currentLogLevel(eLogLevel::Debug) {}
 
 Logger& Logger::getInstance() {
     if (!instance) {
@@ -15,32 +15,33 @@ Logger& Logger::getInstance() {
     return *instance;
 }
 
-void Logger::setLogLevel(LogLevel level) {
+void Logger::setLogLevel(eLogLevel level) {
     currentLogLevel = level;
 }
 
 std::string Logger::getTimestamp() const {
-    std::time_t now = std::time(nullptr);
-    std::tm tstruct;
-    //localtime_r(&now, &tstruct);
+    auto now = std::chrono::system_clock::now();
+    std::time_t now_c = std::chrono::system_clock::to_time_t(now);
+    std::tm local_tm;
+    localtime_s(&local_tm, &now_c); // Windows 向けスレッドセーフ版
     char buf[80];
-    std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &tstruct);
+    std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &local_tm);
     return buf;
 }
 
-void Logger::logInternal(LogLevel level, const char* format, va_list args) {
+void Logger::logInternal(eLogLevel level, const char* format, va_list args) {
     if (level < currentLogLevel) {
         return;
     }
 
     const char* levelStr = "";
     switch (level) {
-        case LogLevel::TRACE:    levelStr = "[TRACE]"; break;
-        case LogLevel::DEBUG:    levelStr = "[DEBUG]"; break;
-        case LogLevel::INFO:     levelStr = "[INFO ]"; break;
-        case LogLevel::WARNING:  levelStr = "[WARN ]"; break;
-        case LogLevel::ERROR:    levelStr = "[ERROR]"; break;
-        case LogLevel::CRITICAL: levelStr = "[CRIT ]"; break;
+        case eLogLevel::Trace:    levelStr = "[TRACE]"; break;
+        case eLogLevel::Debug:    levelStr = "[DEBUG]"; break;
+        case eLogLevel::Info:     levelStr = "[INFO ]"; break;
+        case eLogLevel::Warning:  levelStr = "[WARN ]"; break;
+        case eLogLevel::Error:    levelStr = "[ERROR]"; break;
+        case eLogLevel::Critical: levelStr = "[CRIT ]"; break;
     }
 
     std::string timestamp = getTimestamp();
@@ -52,46 +53,46 @@ void Logger::logInternal(LogLevel level, const char* format, va_list args) {
 void Logger::trace(const char* format, ...) {
     va_list args;
     va_start(args, format);
-    logInternal(LogLevel::TRACE, format, args);
+    logInternal(eLogLevel::Trace, format, args);
     va_end(args);
 }
 
 void Logger::debug(const char* format, ...) {
     va_list args;
     va_start(args, format);
-    logInternal(LogLevel::DEBUG, format, args);
+    logInternal(eLogLevel::Debug, format, args);
     va_end(args);
 }
 
 void Logger::info(const char* format, ...) {
     va_list args;
     va_start(args, format);
-    logInternal(LogLevel::INFO, format, args);
+    logInternal(eLogLevel::Info, format, args);
     va_end(args);
 }
 
 void Logger::warning(const char* format, ...) {
     va_list args;
     va_start(args, format);
-    logInternal(LogLevel::WARNING, format, args);
+    logInternal(eLogLevel::Warning, format, args);
     va_end(args);
 }
 
 void Logger::error(const char* format, ...) {
     va_list args;
     va_start(args, format);
-    logInternal(LogLevel::ERROR, format, args);
+    logInternal(eLogLevel::Error, format, args);
     va_end(args);
 }
 
 void Logger::critical(const char* format, ...) {
     va_list args;
     va_start(args, format);
-    logInternal(LogLevel::CRITICAL, format, args);
+    logInternal(eLogLevel::Critical, format, args);
     va_end(args);
 }
 
-void Logger::assertLog(bool condition, LogLevel level, const char* format, ...) {
+void Logger::assertLog(bool condition, eLogLevel level, const char* format, ...) {
     if (!condition) {
         va_list args;
         va_start(args, format);
@@ -103,4 +104,3 @@ void Logger::assertLog(bool condition, LogLevel level, const char* format, ...) 
 }
 
 } // namespace Log
-} // namespace System
