@@ -35,7 +35,7 @@ void GraphicsManager::releaseGraphics(const std::shared_ptr<Graphics>& graphics)
             // ローダーの使用カウントが0になったら破棄 (オプション)
             if (it->second->getUseCount() <= 0) {
                 loaders.erase(it);
-                Log::Logger::getInstance().debug("Loader removed for: %s", filePath.c_str());
+                LOGGER_DEBUG("Loader removed for: %s", filePath.c_str());
             }
         }
     }
