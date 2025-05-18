@@ -1,6 +1,8 @@
 #include "SceneManager.h"
 #include <algorithm>
+#include "DebugScene.h"
 #include "PauseScene.h"
+#include <DxLib.h>
 
 namespace Scene {
 
@@ -53,9 +55,8 @@ void SceneManager::startFadeOut(float duration) {
 void SceneManager::setDebugMode(bool debugMode) {
     isDebugMode = debugMode;
     if (isDebugMode && !debugScene) {
-        // debugScene は別途実装
-        // debugScene = std::make_unique<DebugScene>();
-        // debugScene->initialize();
+        debugScene = std::make_unique<DebugScene>();
+        debugScene->initialize();
     } else if (!isDebugMode && debugScene) {
         debugScene->finalize();
         debugScene.reset();
@@ -152,11 +153,11 @@ void SceneManager::draw() {
         }
     } else if (isPaused) {
         // ポーズ中のアクティブシーンの描画 (少し暗くするなど)
-        //SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128); // 半透明で暗くする例
+        SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
         for (const auto& scene : activeScenes) {
             scene->draw();
         }
-        //SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+        SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
         // ポーズメニューシーンの描画
         if (pauseScene) {
             pauseScene->draw();

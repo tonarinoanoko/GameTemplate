@@ -12,29 +12,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     SetGraphMode(640, 480, 32);
     ChangeWindowMode(TRUE);
 
-    Log::Logger::getInstance().setLogLevel(Log::eLogLevel::Debug);
+    Log::Logger::getInstance().setLogLevel(Log::eLogLevel::Critical);
     Scene::SceneManager& sceneManager = Scene::SceneManager::getInstance();
     sceneManager.setPauseScene(std::make_unique<Scene::PauseScene>());
-
-    bool debugModeEnabled = false;
+    sceneManager.setDebugMode(true);
 
     while (!ProcessMessage()) {
         Input::InputManager::getInstance().update();
         Input::MouseInputManager::getInstance().update();
-
-        if (Input::InputManager::getInstance().isKeyPressed(KEY_INPUT_D)) {
-            debugModeEnabled = !debugModeEnabled;
-            sceneManager.setDebugMode(debugModeEnabled);
-            LOGGER_INFO("Debug Mode : %s", debugModeEnabled ? "ON" : "OFF");
-        }
-
-        if (Input::InputManager::getInstance().isKeyPressed(KEY_INPUT_P) && !sceneManager.isFading()) {
-            sceneManager.isGamePaused() ? sceneManager.resumeGame() : sceneManager.pauseGame();
-        }
-
-        if (Input::InputManager::getInstance().isKeyPressed(KEY_INPUT_SPACE) && !sceneManager.isFading() && !sceneManager.isGamePaused()) {
-            sceneManager.startFadeOut(1.0f);
-        }
 
         sceneManager.update();
 

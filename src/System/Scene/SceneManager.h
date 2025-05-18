@@ -29,7 +29,7 @@ public:
 
     void addPersistentScene(std::unique_ptr<SceneBase> scene);
     void addScene(std::unique_ptr<SceneBase> scene);
-    void removeScene(SceneBase* scene); // シーンのポインタで指定
+    void removeScene(SceneBase* scene);
 
     void startFadeIn(std::unique_ptr<SceneBase> nextScene, float duration);
     void startFadeOut(float duration);
