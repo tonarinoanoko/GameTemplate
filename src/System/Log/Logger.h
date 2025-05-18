@@ -45,15 +45,10 @@ public:
 } // namespace Log
 
 // マクロ定義
-#ifdef _DEBUG
-#define LOGGER_TRACE(format, ...) (Log::Logger::getInstance().trace(format, __VA_ARGS__))
-#define LOGGER_DEBUG(format, ...) (Log::Logger::getInstance().debug(format, __VA_ARGS__))
-#else
-#define LOGGER_TRACE(format, ...) ((void)0)
-#define LOGGER_DEBUG(format, ...) ((void)0)
-#endif
-#define LOGGER_INFO(format, ...)  (Log::Logger::getInstance().info(format, __VA_ARGS__))
-#define LOGGER_WARNING(format, ...) (Log::Logger::getInstance().warning(format, __VA_ARGS__))
-#define LOGGER_ERROR(format, ...) (Log::Logger::getInstance().error(format, __VA_ARGS__))
-#define LOGGER_CRITICAL(format, ...) (Log::Logger::getInstance().critical(format, __VA_ARGS__))
-#define LOGGER_ASSERT(condition, level, format, ...) (Log::Logger::getInstance().assertLog(condition, level, format, __VA_ARGS__))
+// マクロ定義
+#define LOGGER_TRACE(format, ...) Log::Logger::getInstance().trace(format, ##__VA_ARGS__)
+#define LOGGER_DEBUG(format, ...) Log::Logger::getInstance().debug(format, ##__VA_ARGS__)
+#define LOGGER_INFO(format, ...) Log::Logger::getInstance().info(format, ##__VA_ARGS__)
+#define LOGGER_WARNING(format, ...) Log::Logger::getInstance().warning(format, ##__VA_ARGS__)
+#define LOGGER_ERROR(format, ...) Log::Logger::getInstance().error(format, ##__VA_ARGS__)
+#define LOGGER_CRITICAL(format, ...) Log::Logger::getInstance().critical(format, ##__VA_ARGS__)
