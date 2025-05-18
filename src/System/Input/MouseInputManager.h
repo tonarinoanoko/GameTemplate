@@ -3,7 +3,7 @@
 #include "System/Input/MouseInputState.h"
 #include <DxLib.h>
 
-namespace System {
+namespace Input {
 
 class MouseInputManager {
 private:
@@ -51,4 +51,4 @@ public:
     int getWheelDelta() const;
 };
 
-} // namespace System
+} // namespace Input

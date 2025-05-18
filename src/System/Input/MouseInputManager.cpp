@@ -1,7 +1,7 @@
 #include "System/Input/MouseInputManager.h"
 #include <DxLib.h>
 
-namespace System {
+namespace Input {
 
 MouseInputManager::MouseInputManager() {}
 
@@ -42,4 +42,4 @@ int MouseInputManager::getDeltaX() const { return state.getDeltaX(); }
 int MouseInputManager::getDeltaY() const { return state.getDeltaY(); }
 int MouseInputManager::getWheelDelta() const { return state.getWheelDelta(); }
 
-} // namespace System
+} // namespace Input

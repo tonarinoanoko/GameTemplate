@@ -1,7 +1,7 @@
 #include "MouseInputState.h"
 
 
-namespace System {
+namespace Input {
 
 void MouseInputState::update(int currentX, int currentY, int currentWheelDelta, bool leftButton, bool rightButton, bool middleButton) {
     deltaX = currentX - x;
@@ -15,4 +15,4 @@ void MouseInputState::update(int currentX, int currentY, int currentWheelDelta, 
     middleButtonState.update(middleButton);
 }
 
-} // namespace System
+} // namespace Input

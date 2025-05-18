@@ -2,7 +2,7 @@
 
 #include "InputStateBase.h"
 
-namespace System {
+namespace Input {
 
 class MouseInputState {
 private:
@@ -57,4 +57,4 @@ public:
     int getWheelDelta() const { return wheelDelta; }
 };
 
-} // namespace System
+} // namespace Input

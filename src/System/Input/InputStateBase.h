@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-namespace System {
+namespace Input {
 
 template <typename InputType>
 class InputStateBase {
@@ -79,4 +79,4 @@ public:
     }
 };
 
-} // namespace System
+} // namespace Input

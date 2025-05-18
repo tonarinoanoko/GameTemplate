@@ -5,7 +5,7 @@
 #include <DxLib.h>
 #include "System/Input/InputStateBase.h"
 
-namespace System {
+namespace Input {
 
 class InputManager {
 private:
@@ -35,4 +35,4 @@ public:
     float getKeyHoldDuration(int key) const;
 };
 
-} // namespace System
+} // namespace Input

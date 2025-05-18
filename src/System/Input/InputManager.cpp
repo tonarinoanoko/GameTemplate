@@ -1,6 +1,6 @@
 #include "System/Input/InputManager.h"
 
-namespace System {
+namespace Input {
 
 InputManager::InputManager() {
     watchedKeys = { KEY_INPUT_UP, KEY_INPUT_DOWN, KEY_INPUT_LEFT, KEY_INPUT_RIGHT, KEY_INPUT_SPACE, KEY_INPUT_Z };
@@ -56,4 +56,4 @@ float InputManager::getKeyHoldDuration(int key) const {
     return getState(key).getHoldDuration();
 }
 
-} // namespace System
+} // namespace Input

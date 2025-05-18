@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-namespace System {
+namespace Input {
 
 class MouseButtonState {
 public:
@@ -31,4 +31,4 @@ public:
     float getHoldDuration() const;
 };
 
-} // namespace System
+} // namespace Input

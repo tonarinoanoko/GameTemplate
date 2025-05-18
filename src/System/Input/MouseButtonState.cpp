@@ -1,6 +1,6 @@
 #include "MouseButtonState.h"
 
-namespace System {
+namespace Input {
 
 void MouseButtonState::update(bool isPressed) {
     auto now = std::chrono::steady_clock::now();
@@ -57,4 +57,4 @@ float MouseButtonState::getHoldDuration() const {
     }
 }
 
-} // namespace System
+} // namespace Input
