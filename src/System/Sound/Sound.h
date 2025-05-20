@@ -2,6 +2,8 @@
 
 #include <string>
 
+// todo サウンド関係は手動で修正するため中身封印中
+
 namespace Sound {
 
 enum class SoundType {
