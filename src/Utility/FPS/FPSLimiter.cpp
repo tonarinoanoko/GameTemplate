@@ -1,6 +1,7 @@
 #include "FPSLimiter.h"
 #include <iostream> // デバッグ用 (必要に応じて削除)
 
+namespace Utility {
 FPSLimiter::FPSLimiter(float fps) : targetFPS(fps) {
     if (fps > 0) {
         targetFrameTime = Microseconds(static_cast<long long>(1000000.0f / fps));
@@ -37,4 +38,5 @@ void FPSLimiter::endFrame() {
         // float actualFPS = 1000000.0f / actualFrameDuration.count();
         // std::cout << "Target: " << targetFPS << " Actual: " << actualFPS << std::endl;
     }
+}
 }

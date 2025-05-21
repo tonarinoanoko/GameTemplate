@@ -3,6 +3,7 @@
 #include <chrono>
 #include <string>
 
+namespace Utility {
 class FPSCounter {
 private:
     using Clock = std::chrono::high_resolution_clock;
@@ -24,3 +25,4 @@ public:
     float getFPS() const { return currentFPS; }
     std::string getFormattedFPS() const;
 };
+}

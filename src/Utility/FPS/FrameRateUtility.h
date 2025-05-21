@@ -1,5 +1,6 @@
 #pragma once
 
+namespace Utility {
 class FrameRateUtility {
 private:
     float targetFPS;
@@ -14,3 +15,4 @@ public:
     float getCompensatedCount(float elapsedTime, float baseSpeed);
     int getCompensatedIntegerCount(float elapsedTime, float baseSpeed);
 };
+}
