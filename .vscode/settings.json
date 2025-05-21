@@ -3,5 +3,7 @@
         "dxlib.h": "c++",
         "cmath": "c++",
         "iostream": "c++"
-    }
+    },
+    "editor.fontFamily": "ＭＳ ゴシック",
+    "editor.fontSize": 13
 }
