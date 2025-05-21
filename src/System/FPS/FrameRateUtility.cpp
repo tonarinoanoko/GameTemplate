@@ -1,9 +1,6 @@
 #include "FrameRateUtility.h"
 #include <cmath>
 
-namespace System {
-namespace Utility {
-
 FrameRateUtility::FrameRateUtility(float fps) : targetFPS(fps) {
     if (fps > 0) {
         deltaTime = 1.0f / fps;
@@ -31,6 +28,3 @@ float FrameRateUtility::getCompensatedCount(float elapsedTime, float baseSpeed) 
 int FrameRateUtility::getCompensatedIntegerCount(float elapsedTime, float baseSpeed) {
     return static_cast<int>(std::round(getCompensatedCount(elapsedTime, baseSpeed)));
 }
-
-} // namespace Utility
-} // namespace System

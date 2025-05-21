@@ -3,9 +3,6 @@
 #include <chrono>
 #include <thread>
 
-namespace System {
-namespace Utility {
-
 class FPSLimiter {
 private:
     using Clock = std::chrono::high_resolution_clock;
@@ -27,6 +24,3 @@ public:
     void beginFrame();
     void endFrame();
 };
-
-} // namespace Utility
-} // namespace System
