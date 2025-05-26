@@ -1,7 +1,7 @@
 #include "TextRenderer.h"
 #include "FontManager.h"
 #include "DxLib.h"
-#include "System/Log/Logger.h"
+#include "System/Debug/Log/Logger.h"
 
 namespace Text {
 

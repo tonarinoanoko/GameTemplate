@@ -1,6 +1,6 @@
 #include "SceneGraphicsManager.h"
 #include "ResourceManager.h"
-#include "System/Log/Logger.h"
+#include "System/Debug/Log/Logger.h"
 
 namespace Graphics {
 

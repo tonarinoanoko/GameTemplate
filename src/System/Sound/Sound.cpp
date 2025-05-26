@@ -1,7 +1,7 @@
 #include "Sound.h"
 #include <algorithm>
 #include <DxLib.h>
-#include "System/Log/Logger.h"
+#include "System/Debug/Log/Logger.h"
 #include "SoundManager.h"
 
 #define SOUND_SEAL 1
@@ -37,6 +37,8 @@ bool Sound::load() {
         LOGGER_WARNING("Sound already loaded: %s", filePath.c_str());
         return true;
     }
+#else
+    return true;
 #endif
 }
 

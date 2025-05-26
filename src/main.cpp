@@ -2,7 +2,7 @@
 #include <DxLib.h>
 #include "System/Input/InputManager.h"
 #include "System/Input/MouseInputManager.h"
-#include "System/Log/Logger.h"
+#include "System/Debug/Log/Logger.h"
 #include "System/Scene/SceneManager.h"
 #include "System/Scene/DebugScene.h"
 #include "System/Scene/PauseScene.h"
