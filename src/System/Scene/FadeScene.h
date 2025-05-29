@@ -3,21 +3,17 @@
 #include "SceneBase.h"
 
 namespace Scene {
-
-class FadeScene : public SceneBase {
+class FadeScene : public SceneBase
+{
 public:
     enum class eMode {
+        None,
         In,
         Out
     };
 
-private:
-    eMode mode;
-    float duration;
-    float currentTime;
-
 public:
-    FadeScene(eMode mode, float duration);
+    FadeScene();
     ~FadeScene() override = default;
 
     void initialize() override;
@@ -25,8 +21,14 @@ public:
     void draw() override;
     void finalize() override {}
 
-    bool isFinished() const { return currentTime >= duration; }
-    eMode getMode() const { return mode; }
+    void setFade(eMode mode, float duration);
+    bool isFinished() const;
+    eMode mode() const { return _mode; }
+
+private:
+    eMode _mode;
+    float _duration;
+    float _current_time;
 };
 
 } // namespace Scene

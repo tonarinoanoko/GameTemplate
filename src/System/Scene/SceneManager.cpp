@@ -5,106 +5,108 @@
 
 namespace Scene {
 
-SceneManager* SceneManager::instance = nullptr;
+SceneManager* SceneManager::_instance = nullptr;
 
-SceneManager::SceneManager() {}
-
-SceneManager& SceneManager::getInstance() {
-    if (!instance) {
-        instance = new SceneManager();
-    }
-    return *instance;
+SceneManager::SceneManager()
+{
+    _fade_scene = std::make_unique<FadeScene>();
+    _fade_scene->initialize();
+    _debug_scene = std::make_unique<DebugScene>();
+    _debug_scene->initialize();
 }
 
-void SceneManager::addPersistentScene(std::unique_ptr<SceneBase> scene) {
+SceneManager& SceneManager::instance()
+{
+    if (_instance == nullptr) {
+        _instance = new SceneManager();
+    }
+    return *_instance;
+}
+
+void SceneManager::addResidentScene(std::unique_ptr<SceneBase> scene)
+{
     if (scene) {
         scene->initialize();
-        persistentScenes.push_back(std::move(scene));
+        _resident_scene.push_back(std::move(scene));
     }
 }
 
-void SceneManager::addScene(std::unique_ptr<SceneBase> scene) {
+void SceneManager::addScene(std::unique_ptr<SceneBase> scene)
+{
     if (scene) {
         scene->initialize();
-        activeScenes.push_back(std::move(scene));
+        _active_scenes.push_back(std::move(scene));
     }
 }
 
-void SceneManager::removeScene(SceneBase* scene) {
-    activeScenes.erase(std::remove_if(activeScenes.begin(), activeScenes.end(),
+void SceneManager::removeScene(SceneBase* scene)
+{
+    _active_scenes.erase(std::remove_if(_active_scenes.begin(), _active_scenes.end(),
                                       [&](const std::unique_ptr<SceneBase>& s){ return s.get() == scene; }),
-                      activeScenes.end());
+                      _active_scenes.end());
 }
 
-void SceneManager::startFadeIn(std::unique_ptr<SceneBase> nextScene, float duration) {
-    if (!isFading() && nextScene) {
-        this->addScene(std::move(nextScene));
-        fadeScene = std::make_unique<FadeScene>(FadeScene::eMode::In, duration);
-        fadeScene->initialize();
+void SceneManager::startFadeIn(float duration)
+{
+    if (_fade_scene) {
+        _fade_scene->setFade(FadeScene::eMode::In, duration);
     }
 }
 
-void SceneManager::startFadeOut(float duration) {
-    if (!isFading()) {
-        fadeScene = std::make_unique<FadeScene>(FadeScene::eMode::Out, duration);
-        fadeScene->initialize();
+void SceneManager::startFadeOut(float duration)
+{
+    if (_fade_scene) {
+        _fade_scene->setFade(FadeScene::eMode::Out, duration);
     }
 }
 
-void SceneManager::update() {
-    // 常駐シーンの更新 (ポーズ中でも更新することがある)
-    for (const auto& scene : persistentScenes) {
+void SceneManager::update()
+{
+    // 常駐シーンの更新
+    for (const auto& scene : _resident_scene) {
         scene->update();
     }
 
-    // フェードシーンの更新
-    if (fadeScene) {
-        fadeScene->update();
-        if (fadeScene->isFinished()) {
-            fadeScene->finalize();
-            fadeScene.reset();
-            if (fadeScene->getMode() == FadeScene::eMode::Out) {
-                activeScenes.clear();
-            }
-        }
-    }
-    else {
-        for (const auto& scene : activeScenes) {
-            if (scene->isPausingEnabled()) {
-                scene->update();
-            }
-        }
+    // 基本シーンの更新
+    for (const auto& scene : _active_scenes) {
+        scene->update();
     }
 
     // デバッグシーンの更新
-    if (debugScene) {
-        debugScene->update();
+    if (_debug_scene) {
+        _debug_scene->update();
+    }
+
+    // フェードシーンの更新
+    if (_fade_scene) {
+        _fade_scene->update();
     }
 }
 
-void SceneManager::draw() {
-    // 常駐シーンの描画
-    for (const auto& scene : persistentScenes) {
+void SceneManager::draw()
+{
+    for (const auto& scene : _resident_scene) {
         scene->draw();
     }
 
-    for (const auto& scene : activeScenes) {
+    for (const auto& scene : _active_scenes) {
         scene->draw();
     }
 
-    if (debugScene) {
-        debugScene->draw();
+    if (_debug_scene) {
+        _debug_scene->draw();
     }
 
     // フェードシーンの描画 (最前面)
-    if (fadeScene) {
-        fadeScene->draw();
+    if (_fade_scene) {
+        _fade_scene->draw();
     }
 }
 
-std::string SceneManager::getCurrentSceneName() const {
-    if (!activeScenes.empty()) {
-        std::string name = typeid(*activeScenes.back()).name();
+std::string SceneManager::currentSceneName() const
+{
+    if (_active_scenes.empty() == false) {
+        std::string name = typeid(*_active_scenes.back()).name();
         return name;
     }
     return "No Active Scene";

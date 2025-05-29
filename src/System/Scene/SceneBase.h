@@ -2,7 +2,8 @@
 
 namespace Scene {
 
-class SceneBase {
+class SceneBase
+{
 public:
     virtual ~SceneBase() = default;
 
@@ -14,7 +15,6 @@ public:
     virtual bool isPersistent() const { return false; }    // 常駐シーンかどうか
     virtual void onPause() {}                              // ポーズ時に呼ばれる (デフォルトは何もしない)
     virtual void onResume() {}                             // ポーズ解除時に呼ばれる (デフォルトは何もしない)
-    virtual bool isPausingEnabled() const { return true; } // ポーズ可能かどうか (デフォルトは可能)
 };
 
 } // namespace Scene

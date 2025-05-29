@@ -16,7 +16,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     ChangeWindowMode(TRUE);
 
     Log::Logger::getInstance().setLogLevel(Log::eLogLevel::Critical);
-    Scene::SceneManager& sceneManager = Scene::SceneManager::getInstance();
+    Scene::SceneManager& sceneManager = Scene::SceneManager::instance();
 
     while (!ProcessMessage()) {
         Input::InputManager::getInstance().update();

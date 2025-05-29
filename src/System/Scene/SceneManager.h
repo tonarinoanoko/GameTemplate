@@ -11,33 +11,33 @@ namespace Scene {
 class SceneManager
 {
 public:
-    static SceneManager& getInstance();
+    static SceneManager& instance();
 
-    void addPersistentScene(std::unique_ptr<SceneBase> scene);
+    void addResidentScene(std::unique_ptr<SceneBase> scene);
     void addScene(std::unique_ptr<SceneBase> scene);
     void removeScene(SceneBase* scene);
 
-    void startFadeIn(std::unique_ptr<SceneBase> nextScene, float duration);
+    void startFadeIn(float duration);
     void startFadeOut(float duration);
-    bool isFading() const { return fadeScene != nullptr; }
+    bool isFading() const { return _fade_scene != nullptr; }
 
     // 現在表示中のシーン名を取得
-    std::string getCurrentSceneName() const;
+    std::string currentSceneName() const;
 
     void update();
     void draw();
 
 private:
-    static SceneManager* instance;
+    static SceneManager* _instance;
     SceneManager();
     ~SceneManager() = default;
-    SceneManager(const SceneManager&) = delete;
-    SceneManager& operator=(const SceneManager&) = delete;
+    SceneManager(SceneManager const&) = delete;
+    SceneManager& operator=(SceneManager const&) = delete;
 
-    std::vector<std::unique_ptr<SceneBase>> persistentScenes;
-    std::vector<std::unique_ptr<SceneBase>> activeScenes;
-    std::unique_ptr<FadeScene> fadeScene;
-    std::unique_ptr<SceneBase> debugScene;
+    std::vector<std::unique_ptr<SceneBase>> _resident_scene;
+    std::vector<std::unique_ptr<SceneBase>> _active_scenes;
+    std::unique_ptr<FadeScene> _fade_scene;
+    std::unique_ptr<SceneBase> _debug_scene;
 };
 
 } // namespace Scene

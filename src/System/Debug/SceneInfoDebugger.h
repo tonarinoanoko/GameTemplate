@@ -8,15 +8,16 @@ namespace Scene {
 
 namespace Debug {
 
-class SceneInfoDebugger {
-private:
-    bool isVisible = true;
-
+class SceneInfoDebugger
+{
 public:
     SceneInfoDebugger();
     void setVisible(bool visible);
-    void draw(const Scene::SceneManager& sceneManager);
-    bool visible() { return isVisible; }
+    void draw(const Scene::SceneManager& scene_manager);
+    bool visible() { return _visible; }
+
+private:
+    bool _visible = true;
 };
 
-} // namespace Debug
+}  // namespace Debug

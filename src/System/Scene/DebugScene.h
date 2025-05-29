@@ -1,14 +1,12 @@
 #pragma once
 
 #include "SceneBase.h"
-#include "System/Debug/SceneInfoDebugger.h" // デバッガークラスのインクルード
+#include "System/Debug/SceneInfoDebugger.h"
 
 namespace Scene {
 
-class DebugScene : public SceneBase {
-private:
-    Debug::SceneInfoDebugger sceneInfoDebugger;
-
+class DebugScene : public SceneBase
+{
 public:
     DebugScene();
     ~DebugScene() override = default;
@@ -17,6 +15,9 @@ public:
     void update() override;
     void draw() override;
     void finalize() override;
+
+private:
+    Debug::SceneInfoDebugger _scene_info_debugger;
 };
 
-} // namespace Scene
+}  // namespace Scene
