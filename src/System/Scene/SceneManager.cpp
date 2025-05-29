@@ -1,8 +1,7 @@
 #include "SceneManager.h"
 #include <algorithm>
+#include "DxLib.h"
 #include "DebugScene.h"
-#include "PauseScene.h"
-#include <DxLib.h>
 
 namespace Scene {
 
@@ -52,50 +51,6 @@ void SceneManager::startFadeOut(float duration) {
     }
 }
 
-void SceneManager::setDebugMode(bool debugMode) {
-    isDebugMode = debugMode;
-    if (isDebugMode && !debugScene) {
-        debugScene = std::make_unique<DebugScene>();
-        debugScene->initialize();
-    } else if (!isDebugMode && debugScene) {
-        debugScene->finalize();
-        debugScene.reset();
-    }
-}
-
-void SceneManager::pauseGame() {
-    if (!isPaused) {
-        isPaused = true;
-        for (const auto& scene : activeScenes) {
-            if (scene->isPausingEnabled()) {
-                scene->onPause();
-            }
-        }
-        if (pauseScene) {
-            pauseScene->initialize();
-        }
-    }
-}
-
-void SceneManager::resumeGame() {
-    if (isPaused) {
-        isPaused = false;
-        for (const auto& scene : activeScenes) {
-            if (scene->isPausingEnabled()) {
-                scene->onResume();
-            }
-        }
-        if (pauseScene) {
-            pauseScene->finalize();
-            pauseScene.reset();
-        }
-    }
-}
-
-void SceneManager::setPauseScene(std::unique_ptr<SceneBase> scene) {
-    pauseScene = std::move(scene);
-}
-
 void SceneManager::update() {
     // 常駐シーンの更新 (ポーズ中でも更新することがある)
     for (const auto& scene : persistentScenes) {
@@ -112,8 +67,8 @@ void SceneManager::update() {
                 activeScenes.clear();
             }
         }
-    } else if (!isPaused) {
-        // ポーズ中でなければアクティブシーンを更新
+    }
+    else {
         for (const auto& scene : activeScenes) {
             if (scene->isPausingEnabled()) {
                 scene->update();
@@ -122,13 +77,8 @@ void SceneManager::update() {
     }
 
     // デバッグシーンの更新
-    if (isDebugMode && debugScene) {
+    if (debugScene) {
         debugScene->update();
-    }
-
-    // ポーズメニューシーンの更新
-    if (isPaused && pauseScene) {
-        pauseScene->update();
     }
 }
 
@@ -138,30 +88,12 @@ void SceneManager::draw() {
         scene->draw();
     }
 
-    // アクティブシーンの描画 (ポーズ中でなく、デバッグモードでない場合)
-    if (!isPaused && !isDebugMode) {
-        for (const auto& scene : activeScenes) {
-            scene->draw();
-        }
-    } else if (isDebugMode) {
-        // デバッグモードの場合、アクティブシーンを描画
-        for (const auto& scene : activeScenes) {
-            scene->draw();
-        }
-        if (debugScene) {
-            debugScene->draw();
-        }
-    } else if (isPaused) {
-        // ポーズ中のアクティブシーンの描画 (少し暗くするなど)
-        SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-        for (const auto& scene : activeScenes) {
-            scene->draw();
-        }
-        SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-        // ポーズメニューシーンの描画
-        if (pauseScene) {
-            pauseScene->draw();
-        }
+    for (const auto& scene : activeScenes) {
+        scene->draw();
+    }
+
+    if (debugScene) {
+        debugScene->draw();
     }
 
     // フェードシーンの描画 (最前面)
@@ -172,17 +104,7 @@ void SceneManager::draw() {
 
 std::string SceneManager::getCurrentSceneName() const {
     if (!activeScenes.empty()) {
-        // typeid を使用して型名を取得し、不要な情報を削除
         std::string name = typeid(*activeScenes.back()).name();
-        // Visual Studio の場合 "__1?AV" で始まり、末尾に "@@YAAXXZ" などが付く
-        size_t startPos = name.find_first_not_of(" _?AV");
-        if (std::string::npos != startPos) {
-            name = name.substr(startPos);
-        }
-        size_t endPos = name.find("@@");
-        if (std::string::npos != endPos) {
-            name = name.substr(0, endPos);
-        }
         return name;
     }
     return "No Active Scene";
