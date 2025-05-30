@@ -8,18 +8,6 @@
 namespace Input {
 
 class InputManager {
-private:
-    std::map<int, InputStateBase<int>> keyStates;
-    std::vector<int> watchedKeys;
-
-    // コンストラクタをprivateにする
-    InputManager();
-    // デストラクタ (必要に応じて)
-    ~InputManager() = default;
-    // コピーコンストラクタとコピー代入演算子を削除
-    InputManager(const InputManager&) = delete;
-    InputManager& operator=(const InputManager&) = delete;
-
 public:
     // 静的インスタンスを取得するメソッド
     static InputManager& getInstance();
@@ -27,12 +15,31 @@ public:
     void addWatchKey(int key);
     void update();
 
-    const InputStateBase<int>& getState(int key) const;
+    const InputStateBase& getState(int key) const;
     bool isKeyPressed(int key) const;
     bool isKeyHolding(int key) const;
     bool isKeyJustReleased(int key) const;
     bool isKeyReleased(int key) const;
     float getKeyHoldDuration(int key) const;
+
+private:
+    InputManager();
+    ~InputManager() = default;
+    InputManager(const InputManager&) = delete;
+    InputManager& operator=(const InputManager&) = delete;
+    static InputManager _instance;
+
+private:
+    std::map<int, InputStateBase> keyStates;
+    std::vector<int> watchedKeys = {
+        KEY_INPUT_UP,
+        KEY_INPUT_DOWN,
+        KEY_INPUT_LEFT,
+        KEY_INPUT_RIGHT,
+        KEY_INPUT_SPACE,
+        KEY_INPUT_Z
+    };
+
 };
 
 } // namespace Input

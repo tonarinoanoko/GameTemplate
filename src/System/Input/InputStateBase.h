@@ -4,68 +4,61 @@
 
 namespace Input {
 
-template <typename InputType>
 class InputStateBase {
 public:
-    enum State {
-        RELEASED,
-        PRESSED,
-        HOLDING,
-        JUST_RELEASED
+    enum eState {
+        Released,
+        Pressed,
+        Holding,
+        JustReleased
     };
 
-private:
-    State currentState;
-    bool isCurrentlyPressed;
-    std::chrono::time_point<std::chrono::steady_clock> pressedStartTime;
-    float holdThresholdSeconds;
-
 public:
-    InputStateBase(float holdThreshold = 0.2f) : currentState(RELEASED), isCurrentlyPressed(false), holdThresholdSeconds(holdThreshold) {}
+    InputStateBase(float holdThreshold = 0.2f) : currentState(Released), isCurrentlyPressed(false), holdThresholdSeconds(holdThreshold) {}
 
     void update(bool isInputActive) {
         auto now = std::chrono::steady_clock::now();
 
         if (isInputActive) {
             if (!isCurrentlyPressed) {
-                currentState = PRESSED;
+                currentState = eState::Pressed;
                 pressedStartTime = now;
             } else {
                 auto duration = std::chrono::duration_cast<std::chrono::duration<float>>(now - pressedStartTime);
                 if (duration.count() >= holdThresholdSeconds) {
-                    currentState = HOLDING;
+                    currentState = eState::Holding;
                 } else {
-                    currentState = PRESSED;
+                    currentState = eState::Pressed;
                 }
             }
         } else {
             if (isCurrentlyPressed) {
-                currentState = JUST_RELEASED;
+                currentState = eState::JustReleased;
             } else {
-                currentState = RELEASED;
+                currentState = eState::Released;
             }
         }
         isCurrentlyPressed = isInputActive;
     }
 
-    State getState() const {
+    eState getState() const {
         return currentState;
     }
 
     bool isReleased() const {
-        return currentState == RELEASED;
+        return currentState == eState::Released;
     }
 
     bool isPressed() const {
-        return currentState == PRESSED;
+        return currentState == eState::Pressed;
     }
 
     bool isHolding() const {
-        return currentState == HOLDING;
+        return currentState == eState::Holding;
     }
 
     bool isJustReleased() const {
-        return currentState == JUST_RELEASED;
+        return currentState == eState::JustReleased;
     }
 
     float getHoldDuration() const {
@@ -77,6 +70,12 @@ public:
             return 0.0f;
         }
     }
+
+private:
+    eState currentState;
+    bool isCurrentlyPressed;
+    std::chrono::time_point<std::chrono::steady_clock> pressedStartTime;
+    float holdThresholdSeconds;
 };
 
 } // namespace Input

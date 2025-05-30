@@ -6,9 +6,9 @@ namespace Input {
 
 class MouseInputState {
 private:
-    InputStateBase<int> leftButtonState;
-    InputStateBase<int> rightButtonState;
-    InputStateBase<int> middleButtonState;
+    InputStateBase leftButtonState;
+    InputStateBase rightButtonState;
+    InputStateBase middleButtonState;
     int x;
     int y;
     int deltaX;
@@ -26,7 +26,7 @@ public:
     void update(int currentX, int currentY, int currentWheelDelta, bool leftButton, bool rightButton, bool middleButton);
 
     // 左ボタン関連
-    typename InputStateBase<int>::State getLeftButtonState() const { return leftButtonState.getState(); }
+    InputStateBase::eState getLeftButtonState() const { return leftButtonState.getState(); }
     bool isLeftButtonPressed() const { return leftButtonState.isPressed(); }
     bool isLeftButtonHolding() const { return leftButtonState.isHolding(); }
     bool isLeftButtonJustReleased() const { return leftButtonState.isJustReleased(); }
@@ -34,7 +34,7 @@ public:
     float getLeftButtonHoldDuration() const { return leftButtonState.getHoldDuration(); }
 
     // 右ボタン関連
-    typename InputStateBase<int>::State getRightButtonState() const { return rightButtonState.getState(); }
+    InputStateBase::eState getRightButtonState() const { return rightButtonState.getState(); }
     bool isRightButtonPressed() const { return rightButtonState.isPressed(); }
     bool isRightButtonHolding() const { return rightButtonState.isHolding(); }
     bool isRightButtonJustReleased() const { return rightButtonState.isJustReleased(); }
@@ -42,7 +42,7 @@ public:
     float getRightButtonHoldDuration() const { return rightButtonState.getHoldDuration(); }
 
     // 中ボタン関連
-    typename InputStateBase<int>::State getMiddleButtonState() const { return middleButtonState.getState(); }
+    InputStateBase::eState getMiddleButtonState() const { return middleButtonState.getState(); }
     bool isMiddleButtonPressed() const { return middleButtonState.isPressed(); }
     bool isMiddleButtonHolding() const { return middleButtonState.isHolding(); }
     bool isMiddleButtonJustReleased() const { return middleButtonState.isJustReleased(); }
