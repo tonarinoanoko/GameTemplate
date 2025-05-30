@@ -28,12 +28,13 @@ public:
     void draw();
 
 private:
-    static SceneManager _instance;
     SceneManager();
     ~SceneManager() = default;
     SceneManager(SceneManager const&) = delete;
     SceneManager& operator=(SceneManager const&) = delete;
+    static SceneManager _instance;
 
+private:
     std::vector<std::unique_ptr<SceneBase>> _resident_scene;
     std::vector<std::unique_ptr<SceneBase>> _active_scenes;
     std::unique_ptr<FadeScene> _fade_scene;
