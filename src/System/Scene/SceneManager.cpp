@@ -5,8 +5,6 @@
 
 namespace Scene {
 
-SceneManager* SceneManager::_instance = nullptr;
-
 SceneManager::SceneManager()
 {
     _fade_scene = std::make_unique<FadeScene>();
@@ -17,10 +15,8 @@ SceneManager::SceneManager()
 
 SceneManager& SceneManager::instance()
 {
-    if (_instance == nullptr) {
-        _instance = new SceneManager();
-    }
-    return *_instance;
+    static SceneManager _instance;
+    return _instance;
 }
 
 void SceneManager::addResidentScene(std::unique_ptr<SceneBase> scene)
@@ -42,8 +38,15 @@ void SceneManager::addScene(std::unique_ptr<SceneBase> scene)
 void SceneManager::removeScene(SceneBase* scene)
 {
     _active_scenes.erase(std::remove_if(_active_scenes.begin(), _active_scenes.end(),
-                                      [&](const std::unique_ptr<SceneBase>& s){ return s.get() == scene; }),
-                      _active_scenes.end());
+                                    [&](const std::unique_ptr<SceneBase>& s)
+                                    {
+                                        if (s.get() == scene) {
+                                            s->finalize(); // 削除する前に finalize を呼び出す
+                                            return true;
+                                        }
+                                        return false;
+                                    }),
+                                    _active_scenes.end());
 }
 
 void SceneManager::startFadeIn(float duration)

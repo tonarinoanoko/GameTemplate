@@ -28,7 +28,7 @@ public:
     void draw();
 
 private:
-    static SceneManager* _instance;
+    static SceneManager _instance;
     SceneManager();
     ~SceneManager() = default;
     SceneManager(SceneManager const&) = delete;
